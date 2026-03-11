@@ -18,7 +18,7 @@ test('wrong password', async ({ page }) => {
   await page.locator('[data-test="password"]').fill('wrong_password');
   await page.locator('[data-test="login-button"]').click();
 
-  await expect(page.locator('[data-test="error"]')).toBeVisible();
+  await expect(page.locator('[data-test="error"]')).toContainText('Epic sadface');
 });
 
 test('locked out user', async ({ page }) => {
@@ -26,5 +26,5 @@ test('locked out user', async ({ page }) => {
   await page.locator('[data-test="password"]').fill('secret_sauce');
   await page.locator('[data-test="login-button"]').click();
 
-  await expect(page.locator('[data-test="error"]')).toBeVisible();
+  await expect(page.locator('[data-test="error"]')).toContainText('Epic sadface');
 });
