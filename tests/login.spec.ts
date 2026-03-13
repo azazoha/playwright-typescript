@@ -1,12 +1,32 @@
 import { test, expect } from '@playwright/test';
+import { LoginPage } from '../pages/loginPage';
+import { InventoryPage } from '../pages/inventoryPage';
+import { users } from '../test-data/users';
 
-test('user can login', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com');
+test('successful login', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  const inventoryPage = new InventoryPage(page);
 
-  await page.fill('[data-test="username"]', 'standard_user');
-  await page.fill('[data-test="password"]', 'secret_sauce');
+  await loginPage.goto();
+  await loginPage.login(users.standard.username, users.standard.password);
 
-  await page.click('[data-test="login-button"]');
+  await expect(inventoryPage.pageTitle).toHaveText('Products');
+});
 
-  await expect(page).toHaveURL(/inventory/);
+test('wrong password', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+
+  await loginPage.goto();
+  await loginPage.login(users.wrongPassword.username, users.wrongPassword.password);
+
+  await expect(loginPage.errorMessage).toContainText('Epic sadface:');
+});
+
+test('locked out user', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+
+  await loginPage.goto();
+  await loginPage.login(users.locked.username, users.locked.password);
+
+  await expect(loginPage.errorMessage).toContainText('Epic sadface');
 });
