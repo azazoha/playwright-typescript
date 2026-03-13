@@ -1,30 +1,32 @@
 import { test, expect } from '@playwright/test';
-
-test.beforeEach(async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-});
+import { LoginPage } from '../pages/loginPage';
+import { InventoryPage } from '../pages/inventoryPage';
+import { users } from '../test-data/users';
 
 test('successful login', async ({ page }) => {
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
+  const loginPage = new LoginPage(page);
+  const inventoryPage = new InventoryPage(page);
 
-  await expect(page).toHaveURL(/inventory/);
-  await expect(page.locator('.title')).toHaveText('Products');
+  await loginPage.goto();
+  await loginPage.login(users.standard.username, users.standard.password);
+
+  await expect(inventoryPage.pageTitle).toHaveText('Products');
 });
 
 test('wrong password', async ({ page }) => {
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('wrong_password');
-  await page.locator('[data-test="login-button"]').click();
+  const loginPage = new LoginPage(page);
 
-  await expect(page.locator('[data-test="error"]')).toContainText('Epic sadface');
+  await loginPage.goto();
+  await loginPage.login(users.wrongPassword.username, users.wrongPassword.password);
+
+  await expect(loginPage.errorMessage).toContainText('Epic sadface:');
 });
 
 test('locked out user', async ({ page }) => {
-  await page.locator('[data-test="username"]').fill('locked_out_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
+  const loginPage = new LoginPage(page);
 
-  await expect(page.locator('[data-test="error"]')).toContainText('Epic sadface');
+  await loginPage.goto();
+  await loginPage.login(users.locked.username, users.locked.password);
+
+  await expect(loginPage.errorMessage).toContainText('Epic sadface');
 });
