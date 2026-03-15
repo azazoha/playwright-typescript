@@ -7,8 +7,8 @@ export class InventoryPage {
         this.page = page;
     }
      
-    async addToCart() {
-        await this.page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
+    async addToCart(product: string) {
+        await this.page.locator(`[data-test="add-to-cart-${product}"]`).click();
     }
 
     get pageTitle() {
