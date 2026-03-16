@@ -10,6 +10,11 @@ export class InventoryPage {
     async addToCart(product: string) {
         await this.page.locator(`[data-test="add-to-cart-${product}"]`).click();
     }
+    
+    async openCart() {
+        await this.page.locator('[data-test="shopping-cart-link"]').click();
+    }
+
 
     get pageTitle() {
         return this.page.locator('.title');

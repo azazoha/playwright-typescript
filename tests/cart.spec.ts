@@ -13,7 +13,8 @@ test('add to cart', async ({ page }) => {
 
   await inventoryPage.addToCart(products.backpack);
 
-  await page.locator('[data-test="shopping-cart-link"]').click();
+  await inventoryPage.openCart();
+  
   await expect(page.locator('[data-test="item-4-title-link"]')).toBeVisible();
   await expect(page.locator('[data-test="inventory-item-price"]')).toBeVisible();
   await expect(page.locator('[data-test="item-quantity"]')).toBeVisible();
