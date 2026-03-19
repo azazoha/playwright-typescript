@@ -13,10 +13,22 @@ test('add to cart', async ({ page }) => {
 
   await loginPage.goto();
   await loginPage.login(users.standard.username, users.standard.password);
-
   await inventoryPage.addToCart(products.backpack);
-
   await inventoryPage.openCart();
 
   await expect(cartPage.itemQuantity).toBeVisible();
 });
+
+test('remove item', async ({page}) => {
+  const loginPage = new LoginPage(page);
+  const inventoryPage = new InventoryPage(page);
+  const cartPage = new CartPage(page);
+
+  await loginPage.goto();
+  await loginPage.login(users.standard.username, users.standard.password);
+  await inventoryPage.addToCart(products.backpack);
+  await inventoryPage.openCart();
+  await cartPage.removeItem(products.backpack);
+
+  await expect(cartPage.itemQuantity).toBeHidden();
+})

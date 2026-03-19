@@ -7,6 +7,10 @@ export class CartPage {
         this.page = page;
     }
 
+    async removeItem(product: string) {
+        await this.page.locator(`[data-test="remove-${product}"]`).click();
+    }
+
     get itemQuantity() {
         return this.page.locator('[data-test="item-quantity"]')
     }
