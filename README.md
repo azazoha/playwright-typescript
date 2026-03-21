@@ -33,9 +33,14 @@ SauceDemo is a demo e-commerce application commonly used for UI automation pract
 - Login with wrong password
 - Login with locked user
 
+### Cart functionality
+
+- Add item to cart
+- Remove item
+- Cart persists after reload
+
 Future scenarios will include:
 
-- Cart functionality
 - Checkout flow
 - UI validations
 
@@ -54,19 +59,18 @@ test-data/ → reusable test data
 Example structure:
 
 ```
-project-root
-│
-├── tests
-│ └── login.spec.ts
-│
 ├── pages
-│ └── loginPage.ts
-│
+│   ├── cartPage.ts
+│   ├── inventoryPage.ts
+│   └── loginPage.ts
 ├── test-data
-│ └── users.ts
-│
-└── playwright.config.ts
-
+│   ├── products.ts
+│   └── users.ts
+├── tests
+│   ├── cart.spec.ts
+│   └── login.spec.ts
+├── playwright.config.ts
+└── README.md
 ```
 
 ---
@@ -99,7 +103,7 @@ npx playwright test --ui
 
 Planned improvements to evolve this project into a full automation framework:
 
-- Cart and checkout test scenarios
+- Checkout test scenarios
 - API + UI hybrid testing
 - Test fixtures
 - Parallel execution configuration

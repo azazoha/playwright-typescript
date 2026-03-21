@@ -31,4 +31,18 @@ test('remove item', async ({page}) => {
   await cartPage.removeItem(products.backpack);
 
   await expect(cartPage.itemQuantity).toBeHidden();
-})
+});
+
+test('cart persists after reload',  async ({page}) => {
+  const loginPage = new LoginPage(page);
+  const inventoryPage = new InventoryPage(page);
+  const cartPage = new CartPage(page);
+
+  await loginPage.goto();
+  await loginPage.login(users.standard.username, users.standard.password);
+  await inventoryPage.addToCart(products.backpack);
+  await inventoryPage.openCart();
+
+  await page.goto('https://www.saucedemo.com/cart.html');
+  await expect(cartPage.itemQuantity).toBeVisible();
+});
