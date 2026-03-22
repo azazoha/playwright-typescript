@@ -43,6 +43,8 @@ test('cart persists after reload',  async ({page}) => {
   await inventoryPage.addToCart(products.backpack);
   await inventoryPage.openCart();
 
-  await page.goto('https://www.saucedemo.com/cart.html');
+  await expect(cartPage.itemQuantity).toBeVisible();
+  await cartPage.page.reload()
+
   await expect(cartPage.itemQuantity).toBeVisible();
 });
