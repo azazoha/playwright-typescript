@@ -27,3 +27,18 @@ test('checkout', async ({ page }) => {
   await checkoutStepTwo.finish();
   await expect(checkoutComplete.title).toContainText('Checkout: Complete!');
 });
+
+test('validation error', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  const inventoryPage = new InventoryPage(page);
+  const cartPage = new CartPage(page);
+  const checkoutStepOne = new CheckoutStepOne(page);
+
+  await loginPage.goto();
+  await loginPage.login(users.standard.username, users.standard.password)
+  await inventoryPage.addToCart(products.backpack);
+  await inventoryPage.openCart();
+  await cartPage.checkout();
+  await checkoutStepOne.continue();
+  await expect(checkoutStepOne.errorMessage).toBeVisible();
+});
