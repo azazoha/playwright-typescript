@@ -16,4 +16,8 @@ export class CheckoutStepOne {
     async continue() {
         await this.page.locator('[data-test="continue"]').click();
     }
+
+    get errorMessage() {
+        return this.page.locator('[data-test="error"]')
+    }
 }
