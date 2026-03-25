@@ -2,7 +2,7 @@
 
 End-to-end UI test automation project built with Playwright and TypeScript.
 
-This project demonstrates a clean and scalable automation architecture using Page Object Model, structured test data, and realistic UI test scenarios.
+This project demonstrates a clean and scalable automation architecture using Page Object Model, Fixtures, structured test data, and realistic UI test scenarios.
 
 The goal of this repository is to showcase practical Playwright skills and automation design practices used in real QA environments.
 
@@ -39,36 +39,49 @@ SauceDemo is a demo e-commerce application commonly used for UI automation pract
 - Remove item
 - Cart persists after reload
 
+### Checkout flow
+
+- complete checkout
+- validation error when fields missing
+
+
 Future scenarios will include:
 
-- Checkout flow
 - UI validations
 
 ---
 
 ## Project Structure
 
-
-tests/ → test cases
+fixtures/ → test fixtures
 
 pages/ → Page Object Model classes
 
 test-data/ → reusable test data
 
+tests/ → test cases
 
-Example structure:
 
 ```
+├── fixtures
+│   └── fixtures.ts
 ├── pages
 │   ├── cartPage.ts
+│   ├── checkoutComplete.ts
+│   ├── checkoutStepOne.ts
+│   ├── checkoutStepTwo.ts
 │   ├── inventoryPage.ts
 │   └── loginPage.ts
 ├── test-data
+│   ├── customers.ts
 │   ├── products.ts
 │   └── users.ts
 ├── tests
 │   ├── cart.spec.ts
+│   ├── checkout.spec.ts
 │   └── login.spec.ts
+├── package.json
+├── package-lock.json
 ├── playwright.config.ts
 └── README.md
 ```
@@ -103,9 +116,7 @@ npx playwright test --ui
 
 Planned improvements to evolve this project into a full automation framework:
 
-- Checkout test scenarios
 - API + UI hybrid testing
-- Test fixtures
 - Parallel execution configuration
 - CI pipeline using GitHub Actions
 - Allure reporting
