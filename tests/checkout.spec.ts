@@ -1,44 +1,53 @@
-import { test, expect } from '@playwright/test';
-import { LoginPage } from '../pages/loginPage';
-import { InventoryPage } from '../pages/inventoryPage';
-import { CartPage } from '../pages/cartPage';
+import { test, expect } from '../fixtures/fixtures';
 import { CheckoutStepOne } from '../pages/checkoutStepOne';
 import { CheckoutStepTwo } from '../pages/checkoutStepTwo';
 import { CheckoutComplete } from '../pages/checkoutComplete';
-import { users } from '../test-data/users';
-import { products } from '../test-data/products';
+import { checkout } from '../test-data/checkout';
 
 
-test('checkout', async ({ page }) => {
-  const loginPage = new LoginPage(page);
-  const inventoryPage = new InventoryPage(page);
-  const cartPage = new CartPage(page);
+test('successful checkout', async ({ cartPageWithItem, page }) => {
   const checkoutStepOne = new CheckoutStepOne(page);
   const checkoutStepTwo = new CheckoutStepTwo(page);
   const checkoutComplete = new CheckoutComplete(page);
 
-  await loginPage.goto();
-  await loginPage.login(users.standard.username, users.standard.password)
-  await inventoryPage.addToCart(products.backpack);
-  await inventoryPage.openCart();
-  await cartPage.checkout();
-  await checkoutStepOne.fillYourInfo();
+  await cartPageWithItem.checkout();
+  await checkoutStepOne.fillYourInfo(checkout.firstName, checkout.lastName, checkout.postalCode);
   await checkoutStepOne.continue();
   await checkoutStepTwo.finish();
   await expect(checkoutComplete.title).toContainText('Checkout: Complete!');
 });
 
-test('validation error', async ({ page }) => {
-  const loginPage = new LoginPage(page);
-  const inventoryPage = new InventoryPage(page);
-  const cartPage = new CartPage(page);
+test('checkout validation error when fields are empty', async ({ cartPageWithItem, page }) => {
   const checkoutStepOne = new CheckoutStepOne(page);
 
-  await loginPage.goto();
-  await loginPage.login(users.standard.username, users.standard.password)
-  await inventoryPage.addToCart(products.backpack);
-  await inventoryPage.openCart();
-  await cartPage.checkout();
+  await cartPageWithItem.checkout();
   await checkoutStepOne.continue();
   await expect(checkoutStepOne.errorMessage).toBeVisible();
+});
+
+test('firstName is empty checkout validation', async ({ cartPageWithItem, page }) => {
+  const checkoutStepOne = new CheckoutStepOne(page);
+
+  await cartPageWithItem.checkout();
+  await checkoutStepOne.firstNameEmpty(checkout.lastName, checkout.postalCode);
+  await checkoutStepOne.continue();
+  await expect(checkoutStepOne.errorMessage).toHaveText('Error: First Name is required');
+});
+
+test('lastName is empty checkout validation', async ({ cartPageWithItem, page }) => {
+  const checkoutStepOne = new CheckoutStepOne(page);
+
+  await cartPageWithItem.checkout();
+  await checkoutStepOne.lastNameEmpty(checkout.firstName, checkout.postalCode);
+  await checkoutStepOne.continue();
+  await expect(checkoutStepOne.errorMessage).toHaveText('Error: Last Name is required');
+});
+
+test('zipCode is empty checkout validation', async ({ cartPageWithItem, page }) => {
+  const checkoutStepOne = new CheckoutStepOne(page);
+
+  await cartPageWithItem.checkout();
+  await checkoutStepOne.postalCodeEmpty(checkout.firstName, checkout.lastName);
+  await checkoutStepOne.continue();
+  await expect(checkoutStepOne.errorMessage).toHaveText('Error: Postal Code is required');
 });
