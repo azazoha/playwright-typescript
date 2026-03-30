@@ -14,26 +14,14 @@ test('add to cart', async ({ loggedInPage }) => {
   await expect(cartPage.itemQuantity).toBeVisible();
 });
 
-test('remove item', async ({ loggedInPage }) => {
-  const inventoryPage = new InventoryPage(loggedInPage);
-  const cartPage = new CartPage(loggedInPage);
-
-  await inventoryPage.addToCart(products.backpack);
-  await inventoryPage.openCart();
-  await cartPage.removeItem(products.backpack);
-
-  await expect(cartPage.itemQuantity).toBeHidden();
+test('remove item', async ({ cartPageWithItem }) => {
+  await cartPageWithItem.removeItem(products.backpack);
+  await expect(cartPageWithItem.itemQuantity).toBeHidden();
 });
 
-test('cart persists after reload', async ({ loggedInPage }) => {
-  const inventoryPage = new InventoryPage(loggedInPage);
-  const cartPage = new CartPage(loggedInPage);
+test('cart persists after reload', async ({ cartPageWithItem }) => {
+  await expect(cartPageWithItem.itemQuantity).toBeVisible();
+  await cartPageWithItem.page.reload()
 
-  await inventoryPage.addToCart(products.backpack);
-  await inventoryPage.openCart();
-
-  await expect(cartPage.itemQuantity).toBeVisible();
-  await cartPage.page.reload()
-
-  await expect(cartPage.itemQuantity).toBeVisible();
+  await expect(cartPageWithItem.itemQuantity).toBeVisible();
 });
