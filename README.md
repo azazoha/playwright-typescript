@@ -80,7 +80,7 @@ tests/ → test cases
 │       └── auth
 │           └── loggedIn.ts
 ├── test-data
-│   ├── customers.ts
+│   ├── checkout.ts
 │   ├── products.ts
 │   └── users.ts
 ├── tests
