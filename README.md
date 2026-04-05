@@ -2,7 +2,7 @@
 
 End-to-end UI test automation project built with Playwright and TypeScript.
 
-This project demonstrates a clean and scalable automation architecture using Page Object Model, Fixtures, structured test data, and realistic UI test scenarios.
+This project demonstrates a clean and scalable automation architecture using Page Object Model, Fixtures, structured test data, state setup scripts, and realistic UI test scenarios.
 
 The goal of this repository is to showcase practical Playwright skills and automation design practices used in real QA environments.
 
@@ -14,6 +14,7 @@ The goal of this repository is to showcase practical Playwright skills and autom
 - TypeScript
 - Node.js
 - Playwright Test Runner
+- tsx
 
 ---
 
@@ -57,6 +58,8 @@ fixtures/ → test fixtures
 
 pages/ → Page Object Model classes
 
+scripts/ → setup scrits for manual testing
+
 test-data/ → reusable test data
 
 tests/ → test cases
@@ -72,8 +75,12 @@ tests/ → test cases
 │   ├── checkoutStepTwo.ts
 │   ├── inventoryPage.ts
 │   └── loginPage.ts
+├── scripts
+│   └── setup
+│       └── auth
+│           └── loggedIn.ts
 ├── test-data
-│   ├── customers.ts
+│   ├── checkout.ts
 │   ├── products.ts
 │   └── users.ts
 ├── tests
@@ -111,6 +118,20 @@ npx playwright test --ui
 ```
 
 ---
+
+## Scripts
+These scripts prepare application state for exploratory testing
+using Playwright and tsx (no build step required).
+
+```
+npm run setup:auth
+```
+
+
+## Why tsx?
+
+tsx allows running TypeScript scripts directly without
+additional configuration, making setup scripts simple and fast.
 
 ## Future Improvements
 
