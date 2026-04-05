@@ -19,6 +19,7 @@
   "homepage": "https://github.com/azazoha/playwright-typescript#readme",
   "devDependencies": {
     "@playwright/test": "^1.58.2",
-    "@types/node": "^25.4.0"
+    "@types/node": "^25.4.0",
+    "tsx": "^4.21.0"
   }
 }
